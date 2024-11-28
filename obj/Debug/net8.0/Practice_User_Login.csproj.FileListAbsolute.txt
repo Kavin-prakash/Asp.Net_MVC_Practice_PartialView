@@ -250,6 +250,7 @@ D:\APIXIO_Mentor_Task\MVC\Practice_User_Login\obj\Debug\net8.0\Practice_User_Log
 D:\APIXIO_Mentor_Task\MVC\Practice_User_Login\obj\Debug\net8.0\Practice_User_Login.MvcApplicationPartsAssemblyInfo.cache
 D:\APIXIO_Mentor_Task\MVC\Practice_User_Login\obj\Debug\net8.0\Practice_User_Login.RazorAssemblyInfo.cache
 D:\APIXIO_Mentor_Task\MVC\Practice_User_Login\obj\Debug\net8.0\Practice_User_Login.RazorAssemblyInfo.cs
+D:\APIXIO_Mentor_Task\MVC\Practice_User_Login\obj\Debug\net8.0\Practice_User_Login.sourcelink.json
 D:\APIXIO_Mentor_Task\MVC\Practice_User_Login\obj\Debug\net8.0\staticwebassets.build.json
 D:\APIXIO_Mentor_Task\MVC\Practice_User_Login\obj\Debug\net8.0\staticwebassets.development.json
 D:\APIXIO_Mentor_Task\MVC\Practice_User_Login\obj\Debug\net8.0\staticwebassets\msbuild.Practice_User_Login.Microsoft.AspNetCore.StaticWebAssets.props

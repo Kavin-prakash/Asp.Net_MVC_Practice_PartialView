@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Practice_User_Login")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8febe840e52d9de7d97ae311a7f4f381975b8f8b")]
 [assembly: System.Reflection.AssemblyProductAttribute("Practice_User_Login")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Practice_User_Login")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

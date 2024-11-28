@@ -33,7 +33,7 @@ public class GetAllUsersController : Controller
 
         return Json(userslist);
     }
-    
+
 
     [HttpGet]
     public ActionResult GetUserById(int userId)
@@ -42,8 +42,8 @@ public class GetAllUsersController : Controller
 
         if (userbyid != null)
         {
-            // return Json(userbyid);
-            return PartialView("_UserPartialview", userbyid);
+            return Json(userbyid);
+            // return PartialView("_UserPartialview", userbyid);
         }
         else
         {
@@ -53,7 +53,7 @@ public class GetAllUsersController : Controller
 
 
     [HttpPut]
-    public IActionResult UpdateUserDetail([FromQuery] int userId, User user)
+    public IActionResult UpdateUserDetail([FromQuery] int userId, [FromBody] User user)
     {
         try
         {
@@ -65,7 +65,6 @@ public class GetAllUsersController : Controller
             var existingUser = _context.Users.FirstOrDefault(x => x.UserId == userId);
             if (existingUser != null)
             {
-                // Update the fields
                 existingUser.UserMobileNumber = user.UserMobileNumber;
                 _context.Users.Update(existingUser);
                 _context.SaveChanges();
