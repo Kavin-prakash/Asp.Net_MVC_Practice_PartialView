@@ -1,0 +1,223 @@
+@{
+
+    ViewBag.Title = "ShowUsers";
+    Layout = "";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css">
+
+</head>
+
+<body style="padding: 25px;background-color: rgb(126, 175, 178); ">
+    <div class="account-users-header">
+        <h5>List of Registed Users</h5>
+        @* <hr> *@
+    </div>
+    <div id="users-table">
+        <table class="table" id="userstables">
+            <thead>
+                <tr>
+                    <th>UserName </th>
+                    <th>UserEmail</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+    @* UserDetailsContainer *@
+    <div class="modal fade" id="userModal">
+        <div class="modal-dialog">
+            <div class="modal-content" id="userPartialContent">
+                <div class="modal-header">
+                    <div class="modal-body">
+                        <div>
+                            <h5>User Details</h5>
+                        </div>
+                        <form id="individual-users-details">
+                            <div class="form-group">
+                                <input type="hidden" class="form-control" id="UserId" readonly></input>
+                            </div>
+                            <div class="form-group">
+                                <label for="username">Name:</label>
+                                <input type="text" class="form-control" id="UserName" readonly></input>
+                            </div>
+                            <div>
+                                <label for="userEmail">Email:</label>
+                                <input type="text" class="form-control" id="UserEmail" readonly></input>
+                            </div>
+                            <div>
+                                <label for="userContactNumber">ContactNumber:</label>
+                                <input type="text" class="form-control" id="UserContactNumber"></input>
+                            </div>
+                            <div>
+                                <label for="userRegistreddate">Registed Date:</label>
+                                <input type="text" class="form-control" id="UserRegistedDate" readonly></input>
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        <button onclick="UpdateUserDetails()" type="button" class="btn btn-success"
+                            data-bs-dismiss="modal">Update</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+<script>
+    $(document).ready(function () {
+        getallusers();
+    });
+
+    function getallusers() {
+        $.ajax({
+            url: '@Url.Action("GetAllUserList", "GetAllUsers")',
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                var tableBody = $("#userstables tbody");
+                tableBody.empty();
+
+                console.log(data);
+                $.each(data, function (index, users) {
+                    var tablerow = $('<tr> </tr>');
+                    tablerow.append('<td>' + users.username + '</td>');
+                    tablerow.append('<td>' + users.userEmail + '</td>');
+                    tablerow.append('<td><button class="btn btn-primary" onclick="ExpandUserDetails(' + users.userId + ')">View</button> </td>');
+                    tableBody.append(tablerow);
+                })
+            },
+            error: function (error) {
+                console.log("error" + error);
+            }
+        })
+    }
+
+    function ExpandUserDetails(userId) {
+        $.ajax({
+            url: '@Url.Action("GetUserById", "GetAllUsers")',
+            type: "GET",
+            data: { userId: userId },
+            dataType: "json",
+            success: function (data) {
+                $('.modal-body #UserId').val(data.userId)
+                $('.modal-body #UserName').val(data.username),
+                    $('.modal-body #UserEmail').val(data.userEmail),
+                    $('.modal-body #UserContactNumber').val(data.userMobileNumber),
+                    $('.modal-body #UserRegistedDate').val(data.userRegisteredDateTime),
+                    $('#userModal').modal('show');
+            },
+    @* success: function (partialViewHtml) {
+                $("#userPartialContent").html(partialViewHtml);
+                $("#UserDetailsContainer").modal('show');
+            }, *@
+            error: function (error) {
+                console.log("error" + error);
+            }
+        })
+    }
+    function UpdateUserDetails() {
+        var userId = $('#UserId').val();
+        var user = {
+            UserId: userId,
+            UserName: $('#UserName').val(),
+            UserEmail: $('#UserEmail').val(),
+            UserMobileNumber: $('#UserContactNumber').val(),
+            UserRegisteredDateTime: $('#UserRegistedDate').val()
+        };
+
+        console.log(user); // Debugging
+
+        $.ajax({
+            url: '@Url.Action("UpdateUserDetail", "GetAllUsers")' + '?userId=' + userId,
+            type: "PUT",
+            contentType: "application/json",
+            data: JSON.stringify(user),
+            success: function (response) {
+                console.log(response);
+                alert("User details updated successfully.");
+            },
+            error: function (xhr) {
+                console.log(xhr);
+                alert("An error occurred while updating the user details.");
+            }
+        });
+    }
+
+</script>
+
+</html>
+
+
+@* 
+    function UpdateUserDetails() {
+        var userId = $('#UserId').val();
+        var user = {
+            UserId: userId,
+            UserName: $('#UserName').val(),
+            UserEmail: $('#UserEmail').val(),
+            UserContactNumber: $('#UserContactNumber').val(),
+            UserRegisteredDate: $('#UserRegistedDate').val()
+        };
+
+        console.log(user);
+        $.ajax({
+            url: '@Url.Action("UpdateUserDetail", "GetAllUsers")' + '?userId=' + userId,
+            type: "PUT",
+            contentType: "application/json",
+            data: JSON.stringify(user),
+            dataType: "json",
+            success: function (response) {
+                console.log(response);
+                alert("User details updated successfully.");
+            },
+            error: function (error) {
+                console.log(error.error);
+                alert("An error occurred while updating the user details.");
+            }
+        });
+    } *@
+
+@* function UpdateUserDetails() {
+            var userId = $('#UserId').val();
+            var user = {
+                UserId: userId,
+                UserName: $('#UserName').val(),
+                UserEmail: $('#UserEmail').val(),
+                UserContactNumber: $('#UserContactNumber').val(),
+                UserRegisteredDate: $('#UserRegistedDate').val()
+            };
+
+            console.log(user);
+
+            $.ajax({
+                url: '/api/updateuserdetail?userId=' + userId,
+                type: "PUT",
+                contentType: "application/json",
+                data: JSON.stringify(user),
+                success: function (response) {
+                    console.log(response);
+                    alert("User details updated successfully.");
+                },
+                error: function (error) {
+                    console.log(error);
+                    alert("An error occurred while updating the user details.");
+                }
+            });
+        }
+ *@

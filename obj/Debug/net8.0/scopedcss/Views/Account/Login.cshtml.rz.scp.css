@@ -1,0 +1,33 @@
+
+body[b-cshyu0gzxc] {
+    background-color: #f0f0f0; 
+}
+
+.form-horizontal[b-cshyu0gzxc] {
+    max-width: 600px; /* Restrict form width */
+    margin: auto; /* Center align the form */
+    padding: 20px; /* Add padding */
+    background-color: white; /* White background for the form */
+    border: 1px solid #ccc; /* Light grey border */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Light shadow */
+}
+
+.form-horizontal h4[b-cshyu0gzxc] {
+    color: #333; /* Darker grey for heading */
+}
+
+.form-horizontal .control-label[b-cshyu0gzxc] {
+    color: #555; /* Medium grey for labels */
+}
+
+.btn-default[b-cshyu0gzxc] {
+    background-color: #007bff; /* Bootstrap blue */
+    color: white; /* White text */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded button */
+}
+
+.btn-default:hover[b-cshyu0gzxc] {
+    background-color: #0056b3; /* Darker blue on hover */
+}

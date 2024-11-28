@@ -1,0 +1,62 @@
+@model UserViewModel;
+@* @model IEnumerable<Product> *@
+
+@* @model CombineViewModdel; *@
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "";
+}
+@* @Html.Partial("_ProductDetails", Model) *@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <title>User Login</title>
+</head>
+
+<body>
+    <h2>Login Page</h2>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        // csrf (cross site request forgery) protection
+
+        <div class="form-horizontal">
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(m => m.Email, new { @class = "control-label col-xs-4 col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(m => m.Email)
+                    @Html.ValidationMessageFor(m => m.Email, "Email is Required", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Password, new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(m => m.Password)
+                    @Html.ValidationMessageFor(m => m.Password, "Password is Required", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <button type="submit" value="Login" class="btn btn-default">Login</button>
+                </div>
+            </div>
+            <div>
+                <div> <a asp-controller="Registration" asp-action="Registration">Register</a> </div>
+            </div>
+        </div>
+    }
+
+</body>
+
+</html>

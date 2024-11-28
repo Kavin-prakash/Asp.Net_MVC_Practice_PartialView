@@ -1,0 +1,86 @@
+@model User;
+
+@{
+
+    ViewBag.Title = "ModelUsers";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="modal-header">
+        <div class="modal-body">
+            <div>
+                <h5>User Details</h5>
+            </div>
+            <form id="individual-users-details">
+                <div class="form-group">
+                    <input type="hidden" class="form-control" id="UserId" readonly></input>
+                </div>
+                <div class="form-group">
+                    <label for="username">Name:</label>
+                    <input type="text" class="form-control" id="UserName" readonly></input>
+                </div>
+                <div>
+                    <label for="userEmail">Email:</label>
+                    <input type="text" class="form-control" id="UserEmail" readonly></input>
+                </div>
+                <div>
+                    <label for="userContactNumber">ContactNumber:</label>
+                    <input type="text" class="form-control" id="UserContactNumber"></input>
+                </div>
+                <div>
+                    <label for="userRegistreddate">Registed Date:</label>
+                    <input type="text" class="form-control" id="UserRegistedDate" readonly></input>
+                </div>
+            </form>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            <button onclick="UpdateUserDetails()" type="button" class="btn btn-success"
+                data-bs-dismiss="modal">Update</button>
+        </div>
+    </div>
+</body>
+
+<script>
+    function UpdateUserDetails() {
+        var userId = $('#UserId').val();
+        var user = {
+            UserId: userId,
+            UserName: $('#UserName').val(),
+            UserEmail: $('#UserEmail').val(),
+            UserMobileNumber: $('#UserContactNumber').val(),
+            UserRegisteredDateTime: $('#UserRegistedDate').val()
+        };
+
+        console.log(user); // Debugging
+
+        $.ajax({
+            url: '@Url.Action("UpdateUserDetail", "GetAllUsers")' + '?userId=' + userId,
+            type: "PUT",
+            contentType: "application/json",
+            data: JSON.stringify(user),
+            success: function (response) {
+                console.log(response);
+                alert("User details updated successfully.");
+            },
+            error: function (xhr) {
+                console.log(xhr);
+                alert("An error occurred while updating the user details.");
+            }
+        });
+    }
+</script>
+
+</html>

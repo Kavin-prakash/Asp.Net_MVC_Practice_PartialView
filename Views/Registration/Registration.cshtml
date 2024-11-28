@@ -1,0 +1,136 @@
+@model CreateUserModel
+
+@{
+    ViewBag.Title = "Registration";
+    Layout = "";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> @*JQuery library*@
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script> @*JQuery Validation plugin*@
+    @* <link rel="stylesheet" href="Registration.cshtml.css"/> *@
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    @* <link rel="stylesheet" href="./Registration.cshtml.css"  /> *@
+    
+</head>
+
+<body>
+    <h1>Registration</h1>
+    <form class="registration-form" style="align-items: center;" id="registrationForm"
+        asp-for="UserRegistrationViewModel">
+        <div class="form-group">
+            <label for="UserName">User Name:</label>
+            <input placeholder="Enter you Name" type="text" id="UserName" name="UserName" />
+            @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+        </div>
+        <div>
+            <label for="UserEmail">User Email:</label>
+            <input placeholder="Enter you Email" type="email" id="UserEmail" name="UserEmail" />
+            @Html.ValidationMessageFor(model => model.UserEmail, "", new { @class = "text-danger" })
+        </div>
+        <div>
+            <label for="UserPassword">User Password:</label>
+            <input placeholder="Enter you Password" type="password" id="UserPassword" name="UserPassword" />
+            @Html.ValidationMessageFor(model => model.UserPassword, "", new { @class = "text-danger" })
+        </div>
+        <div>
+            <label for="ConfirmPassword">Confirm Password:</label>
+            <input placeholder="Re-Enter you Password" type="password" id="ConfirmPassword" name="ConfirmPassword" />
+            @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+        </div>
+        <div>
+            <label for="UserMobileNumber">User Mobile Number:</label>
+            <input placeholder="Enter your MobileNumber" type="text" id="UserMobileNumber" name="UserMobileNumber" />
+            @Html.ValidationMessageFor(model => model.UserMobileNumber, "", new { @class = "text-danger" })
+        </div>
+        <button type="submit">Register</button>
+    </form>
+
+    <script>
+        $(document).ready(function () {
+            $.validator.addMethod("passwordcheck",
+                function (value) {
+                    return /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,14}$/.test(value);
+                }, "Password must be between 8-14 characters and contain at least one letter and one number.");
+
+            $("#registrationForm").validate({
+                rules: {
+                    UserName: {
+                        required: true
+                    },
+                    UserEmail: {
+                        required: true,
+                        email: true
+                    },
+                    UserPassword: {
+                        required: true,
+        @* passwordcheck: true *@
+                    },
+            ConfirmPassword: {
+            required: true,
+            equalTo: "#UserPassword"
+        },
+            UserMobileNumber: {
+            required: true,
+            digits: true,
+            minlength: 10,
+            maxlength: 10
+        }
+                },
+            messages: {
+            UserName: {
+                required: "UserName is Required"
+            },
+            UserEmail: {
+                required: "User Email is Required",
+                email: "Please enter a valid email address"
+            },
+            UserPassword: {
+                required: "User Password is Required",
+                passwordcheck: "Password must be between 8-14 characters and contain at least one letter and one number"
+            },
+            ConfirmPassword: {
+                required: "Confirm Password is Required",
+                equalTo: "Passwords do not match"
+            },
+            UserMobileNumber: {
+                required: "User Mobile Number is Required",
+                digits: "Please enter a valid mobile number",
+                minlength: "Mobile number must be exactly 10 digits",
+                maxlength: "Mobile number must be exactly 10 digits"
+            }
+        },
+        @* errorPlacement: function (error, element) {
+                error.insertAfter(element);
+            }, *@
+            submitHandler: function (form) {
+                event.preventDefault();
+                registerUser();
+            }
+            });
+        });
+
+        function registerUser() {
+            $.ajax({
+                url: '@Url.Action("Register", "Registration")',
+                type: 'POST',
+                data: $("#registrationForm").serialize(),
+                success: function (response) {
+                    alert("Registration Successful");
+                    window.location.reload();
+                },
+                error: function (error) {
+                    alert("Registration Failed: " + error);
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,71 @@
+@model IEnumerable<Product>
+
+@{
+    ViewBag.Title = "ProductIndex";
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!--Jquery Library -->
+    <title>Document</title>
+</head>
+
+<body>
+
+    @* <h4>Partial Product Integration</h4> *@
+    <table class="table" id="productTable">
+        <thead>
+            <tr>
+                <th>Product ID</th>
+                <th>Product Name</th>
+                <th>Product Category</th>
+                <th>Product Description</th>
+                <th>Product Price</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+</body>
+
+<script>
+    $(document).ready(function () {
+        loadProductList();
+    });
+
+    function loadProductList() {
+        $.ajax({
+            url: '@Url.Action("GetProductList", "Product")',
+            type: 'GET',
+            dataType: "json",
+            success: function (data) {
+                var tableBody = $('#productTable tbody');
+                tableBody.empty(); // Clear existing table data
+                @* console.log("fetching Data" + data) *@
+
+                // Loop through the JSON data and append rows to the table
+                $.each(data, function (index, product) {
+                    var row = $('<tr> </tr>');
+                    row.append('<td>' + product.productID + '</td>');
+                    row.append('<td>' + product.productName + '</td>');
+                    row.append('<td>' + product.productCategory + '</td>');
+                    row.append('<td>' + product.productDescription + '</td>');
+                    row.append('<td>' + product.productPrice + '</td>');
+                    tableBody.append(row);
+                });
+            },
+            error: function (error) {
+                console.log("Error fetching product list");
+                console.log("Error" + error);
+
+            }
+        });
+    }
+</script>
+
+</html>
