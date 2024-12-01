@@ -1,0 +1,107 @@
+@{
+    ViewBag.title = "UploadView";
+    Layout = "";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Files</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> @*Boot-strap for stype*@
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    @*Summary - Bootstrap for interactive componentls like modals,tooltips,carosels*@
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+    <div>
+        <h3>Upload Files</h3>
+        <hr>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            @* <form asp-controller="Upload" asp-action="UploadFile" enctype="multipart/form-data">
+                <input  type="file" name="SingleFile" class="form-control"></input>
+                <button onclick="UploadFile()" name="Upload" type="submit" class="btn btn-primary">Upload File</button>
+            </form> *@
+            <h4>Documents Upload :</h4>
+            <label style="color: red;" id="errormessagelabel"></label>
+            <form id="fileuploadform" enctype="multipart/form-data">
+                <input type="file" name="SingleFile" class="form-control"></input>
+                <button onclick="UploadFile()" name="Upload" type="submit" class="btn btn-primary">Upload File</button>
+            </form>
+        </div>
+    </div>
+    <hr>
+    <hr>
+    <div class="row">
+        <div class="col-md-2">
+            <h4>Product Details Upload:</h4>
+            <form id="product-details-bulk-upload" enctype="multipart/form-data">
+                <input type="file" name="ProductFile" class="form-control"></input>
+                <button onclick="ProductDetailsUpload()" class="btn btn-success">Upload Product Details</button>
+            </form>
+        </div>
+    </div>
+</body>
+<script>
+    function UploadFile() {
+        event.preventDefault();
+        if ($('#SingleFile').val() != null) {
+            var formData = new FormData(document.getElementById('fileuploadform'));
+            $.ajax({
+                url: '@Url.Action("UploadFile", "Upload")',
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (successresponse) {
+                    alert("success Fully Upload");
+                    console.log(successresponse)
+                },
+                error: function (errorresponse) {
+                    alert(errorresponse.responseText);
+                    console.log(errorresponse.responseText);
+                }
+
+            });
+        }
+        else {
+            alert("Please select a file");
+        }
+    }
+
+    function ProductDetailsUpload() {
+        //create an instance for form data
+        event.preventDefault();
+        if ($("ProductFile").val() != null) {
+            var formData = new FormData(document.getElementById('product-details-bulk-upload'));
+            $.ajax({
+                url: '@Url.Action("UploadProductDetails", "Upload")',
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (successresponse) {
+                    alert("success Fully Upload");
+                    console.log(successresponse)
+                },
+                error: function (errorresponse) {
+                    alert(errorresponse.responseText)
+                    console.log(errorresponse.error)
+                }
+
+            })
+        }
+        else {
+            alert("Please select a file")
+        }
+    }
+</script>
+
+</html>

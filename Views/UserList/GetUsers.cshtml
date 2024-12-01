@@ -1,0 +1,68 @@
+@model List<Practice_User_Login.Models.User>
+
+@{
+    ViewBag.Title = "User List";
+    Layout = "";
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body style="padding: 25px; background-color: rgb(136, 166, 232);">
+    <div class="account-users-header">
+        <h5>List of Registered Users</h5>
+    </div>
+    <div id="users-table">
+        <table class="table" id="userstables">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>UserEmail</th>
+                    <th>Edit User</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Username</td>
+                        <td>@item.UserEmail</td>
+                        <td><button class="btn btn-primary" onclick="ExpandUsers('@item.UserId')">Edit User</button></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="modal fade" id="UserDetailsContainer">
+        <div class="modal-dialog">
+            <div class="modal-content" id="userPartialContent"></div>
+        </div>
+    </div>
+
+    <script>
+        function ExpandUsers(userId) {
+            $.ajax({
+                url: '@Url.Action("GetUserById", "UserList")',
+                type: "GET",
+                data: { userId: userId },
+                success: function (partialViewHtml) {
+                    $("#userPartialContent").html(partialViewHtml);
+                    $("#UserDetailsContainer").modal('show');
+                },
+                error: function (error) {
+                    console.log("Error: " + error);
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

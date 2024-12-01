@@ -10,7 +10,6 @@ public class GetAllUsersController : Controller
 
     private readonly PracticeLoginContext _context;
 
-    // private readonly ILogger _logger;
 
     public GetAllUsersController(PracticeLoginContext practiceLoginContext)
     {
@@ -33,7 +32,6 @@ public class GetAllUsersController : Controller
 
         return Json(userslist);
     }
-
 
     [HttpGet]
     public ActionResult GetUserById(int userId)

@@ -1,5 +1,4 @@
-@model User;
-
+@* @model User;
 
 <!DOCTYPE html>
 <html lang="en">
@@ -7,8 +6,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min  .js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
     <title>Document</title>
 </head>
 
@@ -20,29 +23,31 @@
             </div>
             <form id="individual-users-details">
                 <div class="form-group">
-                    <input type="hidden" class="form-control" id="UserId" readonly></input>
+                    <input type="hidden" class="form-control" id="UserId" value="@Model.UserId" readonly></input>
                 </div>
                 <div class="form-group">
                     <label for="username">Name:</label>
-                    <input type="text" class="form-control" id="UserName" readonly></input>
+                    <input type="text" class="form-control" id="UserName" value="@Model.Username" readonly></input>
                 </div>
                 <div>
                     <label for="userEmail">Email:</label>
-                    <input type="text" class="form-control" id="UserEmail" readonly></input>
+                    <input type="text" class="form-control" id="UserEmail" value="@Model.UserEmail" readonly></input>
                 </div>
                 <div>
                     <label for="userContactNumber">ContactNumber:</label>
-                    <input type="text" class="form-control" id="UserContactNumber"></input>
+                    <input type="text" class="form-control" id="UserContactNumber"
+                        value="@Model.UserMobileNumber"></input>
                 </div>
                 <div>
                     <label for="userRegistreddate">Registed Date:</label>
-                    <input type="text" class="form-control" id="UserRegistedDate" readonly></input>
+                    <input type="text" class="form-control" id="UserRegistedDate" value="@Model.UserRegisteredDateTime"
+                        readonly></input>
                 </div>
             </form>
 
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="closeButton()">Close</button>
             <button onclick="UpdateUserDetails()" type="button" class="btn btn-success"
                 data-bs-dismiss="modal">Update</button>
         </div>
@@ -62,7 +67,7 @@
         console.log(user); // Debugging
 
         $.ajax({
-            url: '@Url.Action("UpdateUserDetail", "GetAllUsers")' + '?userId=' + userId,
+            url: '@Url.Action("UpdateUserDetail", "UserList")',
             type: "PUT",
             contentType: "application/json",
             data: JSON.stringify(user),
@@ -76,6 +81,102 @@
             }
         });
     }
+
+    function closeButton() {
+        $('#UserDetailsContainer')
+    }
+
 </script>
+
+</html> *@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min  .js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>User Details</title>
+</head>
+
+<body>
+    <div class="modal-header">
+        <div class="modal-body">
+            <div>
+                <h5>User Details</h5>
+            </div>
+            <form id="individual-users-details">
+                <div class="form-group">
+                    <input type="hidden" class="form-control" id="UserId" value="@Model.UserId" readonly />
+                </div>
+                <div class="form-group">
+                    <label for="username">Name:</label>
+                    <input type="text" class="form-control" id="UserName" value="@Model.Username" readonly />
+                </div>
+                <div class="form-group">
+                    <label for="userEmail">Email:</label>
+                    <input type="text" class="form-control" id="UserEmail" value="@Model.UserEmail" readonly />
+                </div>
+                <div class="form-group">
+                    <label for="userContactNumber">Contact Number:</label>
+                    <input type="text" class="form-control" id="UserContactNumber" value="@Model.UserMobileNumber" />
+                </div>
+                <div class="form-group">
+                    <label for="userRegisteredDate">Registered Date:</label>
+                    <input type="text" class="form-control" id="UserRegistedDate" value="@Model.UserRegisteredDateTime"
+                        readonly />
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="closeButton()">Close</button>
+            <button onclick="UpdateUserDetails()" type="button" class="btn btn-success">Update</button>
+        </div>
+    </div>
+
+    <script>
+
+        function UpdateUserDetails() {
+            var userId = $('#UserId').val();
+            var user = {
+                UserId: $('#UserId').val(),
+                UserName: $('#UserName').val(),
+                UserEmail: $('#UserEmail').val(),
+                UserMobileNumber: $('#UserContactNumber').val(),
+                UserRegisteredDateTime: $('#UserRegistedDate').val()
+            };
+
+            console.log(user); // Debugging
+
+            console.log(JSON.stringify(user))
+
+            $.ajax({
+        @* url: '@Url.Action("UpdateUserDetail", "UserList")', *@
+                url: '@Url.Action("UpdateUserDetail", "GetAllUsers")' + '?userId=' + userId,
+                type: "PUT",
+                contentType: "application/json",
+                data: JSON.stringify(user),
+                success: function (response) {
+                    console.log(response);
+                    alert("User details updated successfully.");
+                },
+                error: function (error) {
+                    console.error(error.responseText);
+                    alert("An error occurred while updating the user details.");
+                }
+            });
+        }
+
+        function closeButton() {
+            $('#individual-users-details').trigger("reset");
+            $('#yourModalId').modal('hide'); // Ensure `#yourModalId` matches your modal ID
+        }
+    </script>
+</body>
 
 </html>
